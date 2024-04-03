@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 });
 
 app.get("test", (req, res) => {
-  res.json("connect success")
+  return res.json("connect success");
 });
 
 app.post("/send-email", (req, res) => {
