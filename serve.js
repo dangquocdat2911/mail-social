@@ -4,6 +4,9 @@ const nodemailer = require("nodemailer");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware to parse JSON data from request body
+app.use(express.json());
+
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
@@ -53,6 +56,5 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-app.listen(3000, () => console.log("Server ready on port 3000."));
 
 module.exports = app;
