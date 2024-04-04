@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.get("test", (req, res) => {
+app.get("/test", (req, res) => {
   return res.json("connect success");
 });
 
