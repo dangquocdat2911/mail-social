@@ -12,9 +12,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.get("/test", (req, res) => {
+app.get("/", (req, res) => {
   return res.json("connect success");
 });
+
+app.get("/new", (req, res) => {
+  return res.json("new connect success");
+});
+
 
 app.post("/send-email", (req, res) => {
   const { name, email, phone, comment } = req.body;
