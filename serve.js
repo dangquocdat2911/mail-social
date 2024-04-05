@@ -1,19 +1,14 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
+const bodyParser = require("body-parser");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(bodyParser.urlencoded({ extended: true }));
 // Middleware to parse JSON data from request body
 app.use(express.json());
 
-const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  auth: {
-    user: "dquocdat2911@gmail.com",
-    pass: "Dat@19008198",
-  },
-});
 
 app.get("/", (req, res) => {
   return res.json("connect success");
@@ -25,9 +20,23 @@ app.get("/new", (req, res) => {
 
 
 app.post("/send-email", (req, res) => {
+  console.log(req.body, req.params, req.query);
   const { name, email, phone, comment } = req.body;
+  let transporter = nodemailer.createTransport({
+    pool: true,
+    host: "smtp.ethereal.email",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "phuongnam.ltc0203@gmail.com",
+      pass: "lethicham0203",
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
   const mailOptions = {
-    from: "dquocdat2911@gmail.com",
+    from: `${req.body.name}<phuongnam.ltc0203@gmail.com>`,
     to: "dangquocdat2911@gmail.com",
     subject: "Mail liên hệ từ web: cochamduhoc.com",
     text: `Dear Châm:\n
@@ -37,14 +46,15 @@ app.post("/send-email", (req, res) => {
     Nội dung liên hệ: ${comment}
     `,
   };
+  console.log(123);
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
-      res.send("Email sending failed!");
+      return res.send("Email sending failed!");
     } else {
       console.log("Email sent: " + info.response);
-      res.send("Email sent successfully!");
+      return res.send("Email sent successfully!");
     }
   });
 });
